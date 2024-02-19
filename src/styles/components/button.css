@@ -1,0 +1,18 @@
+.button-primary {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    padding: 14px 46px;
+    border-radius: 8px;
+    width: 100%;
+    border: 0px;
+    font-size: 1em;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    letter-spacing: 0.3px;
+    font-family: 'Khyay';
+    transition: all 0.2s ease-in-out;
+}
+
+.button-primary:hover{
+    cursor: pointer;
+    background-position: right center;
+}
