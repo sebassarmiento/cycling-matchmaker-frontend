@@ -1,12 +1,19 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import "../styles/login.css"
 import { useState } from "react";
+import LoaderWheel from "../components/LoaderWheel";
 
 const LoginPage = () => {
 
+    const navigate = useNavigate();
+
     const [userName, setUserName] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+
+    const [loginSuccessful, setLoginSuccessful] = useState<boolean>(true); // true for prototype only
+
+    const [loading, setLoading] = useState<boolean>(false);
 
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUserName(e.target.value)
@@ -17,9 +24,30 @@ const LoginPage = () => {
     }
 
     const handleLogin = (e: any) => {
-        e.preventDefault();
-        console.log("The name is " + userName)
-        // fetch
+        if(userName == "" || password == ""){
+            console.log("hereeeeee")
+            return null;
+        } else {
+            e.preventDefault();
+            console.log("The name is " + userName)
+            // fetch
+            if(loginSuccessful){
+                setLoading(true);
+                setTimeout(() => {
+                    // navigate to "/app/profile", aka login
+                    navigate("/app/profile");
+                    console.log("navigated!");
+                }, 3000);
+            }
+        }
+    }
+
+    if(loading){
+        return (
+            <div>
+                <LoaderWheel />
+            </div>
+        )
     }
 
     return (
@@ -41,7 +69,7 @@ const LoginPage = () => {
                 </div>
 
                 <div onClick={handleLogin} className="login-form-login-btn" >
-                    <Button type="primary" >Login</Button>
+                    <Button disabled={userName == "" || password == ""} type="primary" >Login</Button>
                 </div>
                 <span className="login-form-to-signup" >Don't have an account?<span><Link to="/signup" >Sign up</Link></span></span>
             </form>

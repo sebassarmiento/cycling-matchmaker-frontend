@@ -1,0 +1,56 @@
+.navbar-main-container {
+    padding: 0px 32px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.navbar-main-container > .navbar-brand {
+    font-family: 'Khyay';
+    text-transform: uppercase;
+    color: var(--dark-color);
+    margin: 0px;
+    padding: 0px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    font-size: 1.4em;
+}
+
+
+
+.hamburger-navbar-menu-container {
+    padding: 18px 12px;
+}
+.hamburger-navbar-menu-container:hover {
+    cursor: pointer;
+}
+
+.hamburger-navbar-menu {
+    background-color: var(--dark-color);
+    height: 3px;
+    width: 25px;
+    border-radius: 4px;
+}
+
+.hamburger-navbar-menu::before, .hamburger-navbar-menu::after {
+    content: "";
+    position: absolute;
+    background-color: var(--dark-color);
+    height: 3px;
+    width: 25px;
+    border-radius: 4px;
+}
+
+
+
+
+.hamburger-navbar-menu::before {
+    transform: translateY(8px);
+}
+.hamburger-navbar-menu::after {
+    transform: translateY(-8px);
+}

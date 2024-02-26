@@ -3,13 +3,16 @@ import "../styles/components/button.css"
 
 interface ButtonProps {
     type: 'primary' | 'secondary';
+    disabled?: boolean;
     width?: number;
     children: React.ReactNode;
 }
 
-const Button: React.FC<ButtonProps> = ({ type, children }) => {
+const Button: React.FC<ButtonProps> = ({ type, disabled, children }) => {
     // Determine the button's className based on the `type` prop
-    const className = "button " + (type === 'primary' ? 'button-primary' : 'button-secondary');
+    let className = "button " + (type === 'primary' ? 'button-primary' : 'button-secondary');
+
+    className += (disabled ? " button-disabled" : "");
 
     return (
         <button className={className} >
