@@ -7,6 +7,8 @@ import { gql, useMutation, useQuery, useLazyQuery } from '@apollo/client';
 
 const SignupPage = () => {
 
+    const passwordValidator = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-.]).{8,}$/;
+    const [passwordError, setPasswordError] = useState<string>("");
     //const [loading, setLoading] = useState<boolean>(false);
 
     const [username, setUserName] = useState<string>("");
@@ -63,10 +65,12 @@ const SignupPage = () => {
       const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
       const [usernameErrorMessage, setUsernameErrorMessage] = useState<string>("");
       const [emailErrorMessage, setEmailErrorMessage] = useState<string>("");
-
+      const [isUsernameLoading, setIsUsernameLoading] = useState<boolean>(true);
+      const [isEmailLoading, setIsEmailLoading] = useState<boolean>(true);
       const [validateUsername, { loading: usernameLoading, error, data}]= useLazyQuery(VALIDATE_USERNAME, {
         onCompleted() {
             setUsernameError({});
+            setIsUsernameLoading(usernameLoading);
         },
         onError: (error) => {
             setUsernameError(error);
@@ -79,6 +83,7 @@ const SignupPage = () => {
       const [validateEmail ,{ loading: emailLoading, error: emailErr, data: emailData }] = useLazyQuery(VALIDATE_EMAIL, {
         onCompleted() {
             setEmailError({});
+            setIsEmailLoading(emailLoading);
         },
         onError: (error) => {
             setEmailError(error);
@@ -208,10 +213,19 @@ const SignupPage = () => {
             setIsEmailValid(true);
         }
         
-        if(usernameResult.data.validUsername && emailResult.data.validEmail &&  !emailResult.error && !usernameResult.error) {
-            setCurrentRegisterPage('Page2');
+        if (password === "") {
+            setPasswordError("Password is required.");
+        } else if (!password.match(passwordValidator)) {
+            setPasswordError(
+            "Passwords must be at least 8 characters, must contain at least one lowercase character, one uppercase character, one number, and one special character.");
+        } else if (password !== reTypedPassword) {
+            setPasswordError("Password and Confirm Password must match.");
         }
-
+        else {
+            if(usernameResult.data.validUsername && emailResult.data.validEmail &&  !emailResult.error && !usernameResult.error) {
+                setCurrentRegisterPage('Page2');
+            }
+        }
      }
 
     if(loading){
@@ -248,6 +262,10 @@ const SignupPage = () => {
                 {!isEmailValid && 
                 <div className="signup-form-input" >
                     <label>Email Exists</label>
+                </div>}
+                {passwordError !== "" && 
+                <div className="signup-form-input" >
+                    <label>{passwordError}</label>
                 </div>}
 
 

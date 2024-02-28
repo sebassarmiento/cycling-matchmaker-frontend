@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import "../styles/login.css"
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import LoaderWheel from "../components/LoaderWheel";
 import { gql, useMutation } from '@apollo/client';
 import { AuthContext } from "../context/auth";
@@ -51,15 +51,15 @@ const LoginPage = () => {
         update(_, { data: { login: userData } }) {
             context.login(userData);
             handleLogin
-            if(userData) {
-                setLoginSuccessful(true);
-            }
+            
         },
         onCompleted(data) {
             console.log(data)
             if(data) {
+                console.log("helloo")
                 setLoginSuccessful(true);
             }
+            console.log("login successsful: " + loginSuccessful)
         },
         onError(err) {
             console.log(values)
@@ -75,9 +75,9 @@ const LoginPage = () => {
         });
 
         
-    function loginUserCallback() {
-        loginUser();
-    }
+        function loginUserCallback() {
+            loginUser();
+        }
     const handleLogin = (e: any) => {
         console.log("Variables before mutation:", values);
         if(userName == "" || password == ""){
@@ -87,16 +87,19 @@ const LoginPage = () => {
             console.log("The name is " + userName)
             // fetch
             loginUserCallback();
-            if(loginSuccessful){
-                //setLoading(true);
-                setTimeout(() => {
-                    // navigate to "/app/profile", aka login
-                    navigate("/app/profile");
-                    console.log("navigated!");
-                }, 400);
-            }
+            
         }
     }
+    useEffect(() => {
+        if (loginSuccessful) {
+          // setLoading(true);
+          
+            // navigate to "/app/profile", aka login
+            navigate("/app/profile");
+            console.log("navigated!");
+         
+        }
+      }, [loginSuccessful]);
 
     if(loading){
         return (
