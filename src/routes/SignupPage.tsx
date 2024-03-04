@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../styles/signup.css";
 import LoaderWheel from "../components/LoaderWheel";
 import { gql, useMutation, useQuery, useLazyQuery } from '@apollo/client';
@@ -28,6 +28,9 @@ const SignupPage = () => {
 
     const [registerErrorMessage, setRegisterErrorMessage] = useState<string>("");
 
+    const [isRegisterValid, setIsRegisterValid] = useState<boolean>(false);
+
+
     const [values, setValues] = useState({
         firstName: "",
         lastName: "",
@@ -45,6 +48,7 @@ const SignupPage = () => {
       const [addUser, { loading }] = useMutation(REGISTER_USER, {
         onCompleted() {
             setErrors({});
+            setIsRegisterValid(true);
         },
         onError(err) {
             console.log(values)
@@ -185,10 +189,17 @@ const SignupPage = () => {
     const handleSignUp = () => {
         //setLoading(true);
         registerUser();
-        if(Object.keys(errors).length === 0) {
+        // if(Object.keys(errors).length === 0) {
+        //     handleClose();
+        // }
+    }
+
+    useEffect(() => {
+        if (isRegisterValid) {
+          // setLoading(true);
             handleClose();
         }
-    }
+      }, [isRegisterValid]);
 
     // Check username and email are valid to continue registering
     const handleContinue = async () => {

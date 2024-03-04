@@ -4,14 +4,16 @@ import "../styles/login.css"
 import { useState, useContext, useEffect } from "react";
 import LoaderWheel from "../components/LoaderWheel";
 import { gql, useMutation } from '@apollo/client';
-import { AuthContext } from "../context/auth";
+//import { UseUser } from "../context/auth";
 
 const LoginPage = () => {
 
     const navigate = useNavigate();
 
-    const context = useContext(AuthContext);
-
+    //const context = useContext(AuthContext);
+    //const { user, setUser, updateUserProperty } = UseUser();
+    
+    
     const [userName, setUserName] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
@@ -49,7 +51,7 @@ const LoginPage = () => {
 
     const [loginUser, { loading }] = useMutation(LOGIN_USER,  {
         update(_, { data: { login: userData } }) {
-            context.login(userData);
+           // context.login(userData);
             handleLogin
             
         },
@@ -59,7 +61,13 @@ const LoginPage = () => {
                 console.log("helloo")
                 setLoginSuccessful(true);
             }
-            console.log("login successsful: " + loginSuccessful)
+            const initialUser = {
+                username: data.login.username,
+                // other properties...
+              };
+            //setUser(initialUser);
+
+            //updateUserProperty('username', data.username);
         },
         onError(err) {
             console.log(values)
@@ -78,6 +86,7 @@ const LoginPage = () => {
         function loginUserCallback() {
             loginUser();
         }
+
     const handleLogin = (e: any) => {
         console.log("Variables before mutation:", values);
         if(userName == "" || password == ""){
@@ -155,7 +164,11 @@ mutation login(
       }
     ) {
       username
-      loginToken
+      weight
+      sex
+      password
+      email
+
     }
   }
 `;
