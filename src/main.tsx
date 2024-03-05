@@ -6,8 +6,11 @@ import LandingPage from './routes/LandingPage'
 import LoginPage from './routes/LoginPage'
 import SignupPage from './routes/SignupPage'
 import ProfilePage from './routes/app/ProfilePage'
+import { useQuery, gql } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 
+function App() {
 const router = createBrowserRouter([
   {
     path: "/",
@@ -27,9 +30,22 @@ const router = createBrowserRouter([
   }
 ])
 
-
-ReactDOM.createRoot(document.getElementById('root')!).render(
+return (
   <React.StrictMode>
     <RouterProvider router={router} />
-  </React.StrictMode>,
+  </React.StrictMode>
 )
+}
+
+const client = new ApolloClient({
+  uri: ' http://localhost:5000/',
+  cache: new InMemoryCache(),
+});
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <ApolloProvider client={client}>
+  <App />
+</ApolloProvider>,
+)
+
+export default App;
